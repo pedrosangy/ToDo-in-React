@@ -77,7 +77,7 @@ function App() {
       <Filter filter={filter} setFilter={setFilter} setSort={setSort} />
       <div className="todo-list">
         {todos
-          .filter((todo) =>
+          .filter((todo) => 
             //se a escolha for all retorna true e nao faz nada, se a opcao for completed retorna todos que estao riscados
             // se nao retorna os que nao estao riscados
             filter === "All"

@@ -15,7 +15,7 @@ const TodoForm = ({ addTodo }) => {
     // Depois que tudo for feito, ele atualiza o state para limpar os campos
     setValue("");
     setCategory("");
-  };
+  }; 
 
   return (
     <div className="todo-form">
@@ -23,7 +23,7 @@ const TodoForm = ({ addTodo }) => {
       {/* onSubmit é usado para dar um evento quando o formulário é submetido, colocando dentro das chaves */}
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
+          type="text" 
           placeholder="Task"
           value={value}
           // Essa função faz com que o valor do input seja atualizado pelo que está sendo escrito
@@ -40,5 +40,6 @@ const TodoForm = ({ addTodo }) => {
     </div>
   );
 };
+
 
 export default TodoForm;

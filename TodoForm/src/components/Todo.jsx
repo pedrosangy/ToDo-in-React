@@ -4,13 +4,13 @@ import React from "react";
 // Como exemplo: "const Todo = ({ todo, removeTodo, completeTodo })"
 
 const Todo = ({ todo, removeTodo, completeTodo }) => {
-  return (
+  return ( 
     <div
       className="todo"
       // Faz com que a linha que for isCompleted tenha o textDecoration mudado, caso contrário não acontece nada "".
       style={{ textDecoration: todo.isCompleted ? "line-through" : "" }}
     >
-      <div className="content">
+      <div className="content"> 
         <p>{todo.text}</p>
         <p className="category">({todo.category})</p>
       </div>
@@ -22,7 +22,7 @@ const Todo = ({ todo, removeTodo, completeTodo }) => {
           X
         </button>
       </div>
-    </div>
+    </div> 
   );
 };
 
