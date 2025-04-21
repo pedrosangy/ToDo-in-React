@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "@fontsource/roboto/400.css";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import TodoForm from "./components/TodoForm";
 import Todo from "./components/Todo";
 import Search from "./components/Search";
@@ -58,7 +58,8 @@ function App() {
     const newTodo = [
       ...todos,
       {
-        id: Math.floor(Math.random(), 10000),
+        id: Math.floor(Math.random() * 10000),
+
         text,
         category,
         isCompleted: false,
@@ -95,24 +96,22 @@ function App() {
           height: "90vh",
           padding: "20px",
           mt: "20px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           borderRadius: "10px",
         }}
       >
-        <TodoForm addTodo={addTodo} />
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-
-            marginTop: "20px",
-          }}
-        >
+        <Box>
+          <Stack >
+          <TodoForm addTodo={addTodo} />
+          </Stack>
           <Box
             sx={{
               width: "1000px",
               height: "300px",
-
+              marginTop: "50px",
+              
               backgroundColor: "#F2EFE7",
               borderRadius: "10px",
               overflow: "hidden",

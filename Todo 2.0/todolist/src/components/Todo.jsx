@@ -1,13 +1,22 @@
-import { Box, IconButton, Modal, Stack, Typography, Button } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Modal,
+  Stack,
+  Typography,
+  Button,
+} from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import React, { useState } from "react";
 
 const Todo = ({ todo, removeTodo, completeTodo }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [iconEnabled, setIconEnabled] = useState(false);
 
   return (
     <Box
@@ -29,8 +38,26 @@ const Todo = ({ todo, removeTodo, completeTodo }) => {
           boxSizing: "border-box",
           overflow: "hidden",
           marginRight: "5px",
+          position: "relative", // Adiciona isso!
         }}
       >
+        <IconButton
+          size="small"
+          color="primary"
+          onClick={handleOpen}
+          sx={{
+            color: "#fff",
+            background: "transparent",
+            width: "24px",
+            height: "24px",
+            position: "absolute", // Posiciona de forma absoluta
+            top: "5px", // Ajusta a distância do topo
+            right: "5px", // Ajusta a distância da direita
+          }}
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+
         <Typography
           variant="h6"
           component="h2"
@@ -43,21 +70,20 @@ const Todo = ({ todo, removeTodo, completeTodo }) => {
         >
           {todo.text}
         </Typography>
-        <Typography variant="body1" component="p" sx={{ color: "third.main" }}>
+
+        <Typography variant="body1" component="p" sx={{ color: "#FFEB00" }}>
           ({todo.category})
         </Typography>
+        <DoneAllIcon
+          sx={{
+            position: "absolute",
+            right: "10px",
+            bottom: "5px",
+            color: iconEnabled ? "#06D001" : "#A0A0A0", // verde se habilitado, cinza se não
+            opacity: iconEnabled ? 1 : 0.3, // opacidade menor se desabilitado
+          }}
+        />
       </Box>
-
-      <IconButton
-        color="primary"
-        onClick={handleOpen}
-        sx={{
-          backgroundColor: "white",
-          "&:hover": { backgroundColor: "#e0e0e0" },
-        }}
-      >
-        <MoreHorizIcon />
-      </IconButton>
 
       <Modal open={open} onClose={handleClose}>
         <Box
@@ -86,7 +112,7 @@ const Todo = ({ todo, removeTodo, completeTodo }) => {
               variant="contained"
               color="primary"
               onClick={() => {
-                completeTodo(todo.id);
+                setIconEnabled(true);
                 handleClose();
               }}
               startIcon={<CheckCircleIcon />}

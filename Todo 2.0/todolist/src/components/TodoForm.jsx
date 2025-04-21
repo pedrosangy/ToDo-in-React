@@ -1,91 +1,127 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const TodoForm = ({ addTodo }) => {
   const [value, setValue] = useState("");
   const [category, setCategory] = useState("");
 
   const handleSubmit = (e) => {
-    // Primeiro, ele para de atualizar a página e cria uma nova condição caso não escreva nada nos inputs
     e.preventDefault();
     if (!value || !category) return;
 
-    // Aqui está chamando a função addTodo do componente pai e passando os valores
     addTodo(value, category);
-    // Depois que tudo for feito, ele atualiza o state para limpar os campos
     setValue("");
     setCategory("");
   };
-  return ( 
-    <Stack
-      spacing={2}
-      direction="column"
-      sx={{ padding: "20px", borderRadius: "10px", alignItems: "center" }}
-    >
-      <Typography
-        variant="h3"
-        sx={{
-          fontFamily: "monospace",
-          fontWeight: 700,
-          letterSpacing: ".1rem",
-          color: "fourth.main",
-          textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
-          textAlign: "center",
-          mt: 2,
-          mb: 4,
-        }}
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <Stack
+        spacing={2}
+        direction="flex"
+        sx={{ padding: "20px", borderRadius: "10px", alignItems: "center" }}
       >
-        TODO LIST
-      </Typography>
-      <Stack sx={{ display: "flex", gap: 2 }} direction="row" onChange={handleSubmit}>
-        <TextField
-          id="outlined-basic"
-          label="Create a new task..."
-          variant="outlined"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          sx={{
-            maxWidth: "200px",
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "fourth.main", // sua cor secundária
+        <Stack direction="row" spacing={2}>
+          <TextField
+            id="outlined-basic"
+            label="Create a new task..."
+            variant="outlined"
+            required
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            sx={{
+              maxWidth: "200px",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "fourth.main",
+                },
+                "&:hover fieldset": {
+                  borderColor: "fourth.main",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "fourth.main",
+                },
               },
-              "&:hover fieldset": {
-                borderColor: "fourth.main",
+              "& .MuiOutlinedInput-input": {
+                color: "#fff",
               },
-              "&.Mui-focused fieldset": {
-                borderColor: "fourth.main",
-              },
-            },
-            "& .MuiInputLabel-root": {
-              color: "fourth.main",
-              "&.Mui-focused": {
+              "& .MuiInputLabel-root": {
                 color: "fourth.main",
+                "&.Mui-focused": {
+                  color: "fourth.main",
+                },
               },
-            },
-          }}
-        />
-        <Button
-          variant="contained"
-          type="submit"
+            }}
+          />
+
+          <TextField
+            label="Category"
+            variant="outlined"
+            value={category}
+            required
+            onChange={(e) => setCategory(e.target.value)}
+            sx={{
+              maxWidth: "150px",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "fourth.main",
+                },
+                "&:hover fieldset": {
+                  borderColor: "fourth.main",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "fourth.main",
+                },
+              },
+              "& .MuiOutlinedInput-input": {
+                color: "#fff",
+              },
+              "& .MuiInputLabel-root": {
+                color: "fourth.main",
+                "&.Mui-focused": {
+                  color: "fourth.main",
+                },
+              },
+            }}
+          />
+
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{
+              minWidth: "35px",
+              padding: "0px",
+              height: "35px",
+              alignSelf: "center",
+              borderRadius: "19px",
+              backgroundColor: "secondary.main",
+              boxShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+            }}
+          >
+            <CheckCircleIcon fontSize="medium" />
+          </Button>
+        </Stack>
+        <Typography
+          variant="h3"
           sx={{
-            minWidth: "35px",
-            padding: "0px",
-            height: "35px",
-            alignSelf: "center",
-            borderRadius: "19px",
-            backgroundColor: "secondary.main",
-            boxShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+            fontFamily: "monospace",
+            fontWeight: 700,
+            letterSpacing: ".1rem",
+            color: "fourth.main",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+            textAlign: "center",
+            mt: 2,
+            mb: 4,
           }}
         >
-          <CheckCircleIcon fontSize="medium" color="third.main" />
-        </Button>
+          TODO LIST
+        </Typography>
+
+        
       </Stack>
-      
-    </Stack>
+    </form>
   );
 };
- 
+
 export default TodoForm;
