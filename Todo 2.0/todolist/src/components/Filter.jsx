@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const Filter = () => {
+const Filter = ({ filter, setFilter, setSort }) => {
   return (
     <div>
-        <input type="text" placeholder="Search..."/>
+      <input type="text" placeholder="Search..." />
     </div>
-  )
-}
+  );
+};
 
-export default Filter
+export default Filter;

@@ -1,10 +1,9 @@
 import { useState } from "react";
 import "@fontsource/roboto/400.css";
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import TodoForm from "./components/TodoForm";
 import Todo from "./components/Todo";
-import Search from "./components/Search";
-import Filter from "./components/Filter";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./App.css";
 
@@ -103,15 +102,21 @@ function App() {
         }}
       >
         <Box>
-          <Stack >
-          <TodoForm addTodo={addTodo} />
-          </Stack>
+          <Grid container spacing={10} direction="row" sx={{display: "flex", justifyContent: "center", marginBottom: "20px"}}>
+            <TodoForm
+              addTodo={addTodo}
+              search={search}
+              setSearch={setSearch}
+              filter={filter}
+              setFilter={setFilter}
+              sort={sort}
+              setSort={setSort}
+            />
+          </Grid>
           <Box
             sx={{
               width: "1000px",
               height: "300px",
-              marginTop: "50px",
-              
               backgroundColor: "#F2EFE7",
               borderRadius: "10px",
               overflow: "hidden",

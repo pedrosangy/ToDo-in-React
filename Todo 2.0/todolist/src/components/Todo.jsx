@@ -66,7 +66,7 @@ const Todo = ({ todo, removeTodo, completeTodo }) => {
             wordWrap: "break-word",
             overflow: "hidden",
             fontSize: "1rem",
-          }}
+          }} 
         >
           {todo.text}
         </Typography>
