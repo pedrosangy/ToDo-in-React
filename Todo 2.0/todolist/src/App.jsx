@@ -1,38 +1,17 @@
+import { Box, Container } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
-import "@fontsource/roboto/400.css";
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
+import theme from "./theme";
+import useTodos from "./hooks/use.todo"; 
 import TodoForm from "./components/TodoForm";
-import Todo from "./components/Todo";
-
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import "./App.css";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#233142",
-    },
-    secondary: {
-      main: "#455D7A",
-    },
-    third: {
-      main: "#F95959",
-    },
-    fourth: {
-      main: "#E3E3E3",
-    },
-  },
-});
+import TodoList from "./components/TodoList";
 
 function App() {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("All");
-  const [sort, setSort] = useState("asc");
-
-  const [todos, setTodos] = useState([
+  // Custom hook for todos state management
+  const { todos, addTodo, removeTodo, completeTodo } = useTodos([
     {
       id: 1,
-      text: "Criar jshjuijhnkpdofjihfhfhoh",
+      text: "Criar funcionalidades x no sistema",
       category: "trabalho",
       isCompleted: false,
     },
@@ -44,118 +23,68 @@ function App() {
     },
     {
       id: 3,
-      text: "Buy breashgdfhejwkdihdfhhfhd",
+      text: "Buy bread",
       category: "Estudos",
       isCompleted: false,
     },
   ]);
 
-  const addTodo = (text, category) => {
-    //essa funcao cria um novo modelo de To Do e adiciona ele ao array de ToDo's
-    // assim quando formos criar um novo To Do, ele sera chamado e apenas usar a props text e category
-    // que esta sendo atualizado dentro do component TodoForm
-    const newTodo = [
-      ...todos,
-      {
-        id: Math.floor(Math.random() * 10000),
-
-        text,
-        category,
-        isCompleted: false,
-      },
-    ];
-    setTodos(newTodo);
-  };
-  //essa funcao remove o To Do que foi selecionado com base no id
-  const removeTodo = (id) => {
-    const newTodos = [...todos];
-    // filtra todos os To Do's que não tem o id que foi selecionado e deixa,
-    //  caso for igual ao selecionado , ele é removido ou seja, null.
-    const filterTodos = newTodos.filter((todo) =>
-      todo.id !== id ? todo : null
-    );
-    setTodos(filterTodos);
-  };
-
-  const completeTodo = (id) => {
-    const newTodos = [...todos];
-    newTodos.map((todo) =>
-      // se o todo id for igual o id no array de dado , o tod. isCompleted q atualmente e false, passa a ser true ou seja , alterna
-      //  dando a possibilidade de quando clicar dnv voltar a ser false voltando ao que era antes
-      todo.id === id ? (todo.isCompleted = !todo.isCompleted) : todo
-    );
-    setTodos(newTodos);
-  };
+  // UI filter, search, and sort states
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("All");
+  const [sort, setSort] = useState("asc");
 
   return (
+    // Applies the custom MUI theme globally
     <ThemeProvider theme={theme}>
       <Container
         sx={{
           bgcolor: "primary.main",
-          height: "90vh",
+          minHeight: "100vh",
           padding: "20px",
-          mt: "20px",
           display: "flex",
-          justifyContent: "center",
+          flexDirection: "column",
           alignItems: "center",
-          borderRadius: "10px",
         }}
-      >
-        <Box>
-          <Grid container spacing={10} direction="row" sx={{display: "flex", justifyContent: "center", marginBottom: "20px"}}>
-            <TodoForm
-              addTodo={addTodo}
-              search={search}
-              setSearch={setSearch}
-              filter={filter}
-              setFilter={setFilter}
-              sort={sort}
-              setSort={setSort}
-            />
-          </Grid>
+      > 
+        {/* Main app wrapper for responsive max width */}
+        <Box sx={{ width: "100%", maxWidth: 1050 }}>
+          {/* Task add/search/filter form */}
+          <TodoForm
+            addTodo={addTodo}
+            search={search}
+            setSearch={setSearch}
+            filter={filter}
+            setFilter={setFilter}
+            sort={sort}
+            setSort={setSort}
+          />
+          {/* Task list display area with background and padding */}
           <Box
             sx={{
-              width: "1000px",
-              height: "300px",
+              width: "100%",
+              minHeight: "350px",
+              mt: 2,
               backgroundColor: "#F2EFE7",
               borderRadius: "10px",
               overflow: "hidden",
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+              p: 2,
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                marginLeft: "45px",
-                gap: "10px",
-                padding: "10px",
-                alignContent: "flex-start",
-                height: "100%",
-                boxSizing: "border-box",
-                overflowY: "auto",
-                scrollbarWidth: "thin", // Firefox
-                "&::-webkit-scrollbar": { width: "6px" }, // Chrome
-                "&::-webkit-scrollbar-thumb": {
-                  backgroundColor: "#455D7A",
-                  borderRadius: "10px",
-                },
-              }}
-            >
-              {todos.map((todo) => (
-                <Todo
-                  key={todo.id}
-                  todo={todo}
-                  removeTodo={removeTodo}
-                  completeTodo={completeTodo}
-                />
-              ))}
-            </Box>
+            {/* Renders all tasks based on filter/search/sort */}
+            <TodoList
+              todos={todos}
+              filter={filter}
+              search={search}
+              sort={sort}
+              removeTodo={removeTodo}
+              completeTodo={completeTodo}
+            />
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
   );
 }
-
 export default App;

@@ -1,22 +1,20 @@
 import {
   Box,
   IconButton,
-  Modal,
-  Stack,
   Typography,
+  Stack,
+  Modal,
   Button,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React, { useState } from "react";
 
-const Todo = ({ todo, removeTodo, completeTodo }) => {
+const TodoItem = ({ todo, removeTodo, completeTodo }) => {
+  // State for modal open/close
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [iconEnabled, setIconEnabled] = useState(false);
 
   return (
     <Box
@@ -27,108 +25,112 @@ const Todo = ({ todo, removeTodo, completeTodo }) => {
         boxSizing: "border-box",
       }}
     >
+      {/* Card displaying the todo info */}
       <Box
         sx={{
-          width: "150px",
-          minHeight: "135px",
-          padding: "15px",
+          width: "180px",
+          minHeight: "120px",
+          padding: "14px",
           borderRadius: "10px",
           backgroundColor: "#455D7A",
-          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-          boxSizing: "border-box",
+          boxShadow: "0 0 10px rgba(0,0,0,0.1)",
           overflow: "hidden",
-          marginRight: "5px",
-          position: "relative", // Adiciona isso!
+          marginRight: "10px",
+          position: "relative",
         }}
       >
+        {/* Expand actions modal */}
         <IconButton
           size="small"
-          color="primary"
-          onClick={handleOpen}
+          onClick={() => setOpen(true)}
+          aria-label="Show actions"
           sx={{
             color: "#fff",
             background: "transparent",
-            width: "24px",
-            height: "24px",
-            position: "absolute", // Posiciona de forma absoluta
-            top: "5px", // Ajusta a distância do topo
-            right: "5px", // Ajusta a distância da direita
+            position: "absolute",
+            top: "5px",
+            right: "5px",
           }}
         >
           <ExpandMoreIcon />
         </IconButton>
 
+        {/* Task text, with strikethrough if completed */}
         <Typography
           variant="h6"
-          component="h2"
           color="fourth.main"
           sx={{
             wordWrap: "break-word",
-            overflow: "hidden",
             fontSize: "1rem",
-          }} 
+            marginBottom: 1,
+            textDecoration: todo.isCompleted ? "line-through" : "none",
+          }}
         >
           {todo.text}
         </Typography>
 
-        <Typography variant="body1" component="p" sx={{ color: "#FFEB00" }}>
+        {/* Task category */}
+        <Typography variant="body2" sx={{ color: "#FFEB00", mb: 1 }}>
           ({todo.category})
         </Typography>
+
+        {/* Completion icon (color depends on status) */}
         <DoneAllIcon
           sx={{
             position: "absolute",
             right: "10px",
             bottom: "5px",
-            color: iconEnabled ? "#06D001" : "#A0A0A0", // verde se habilitado, cinza se não
-            opacity: iconEnabled ? 1 : 0.3, // opacidade menor se desabilitado
+            color: todo.isCompleted ? "#06D001" : "#A0A0A0",
+            opacity: todo.isCompleted ? 1 : 0.3,
           }}
         />
       </Box>
 
-      <Modal open={open} onClose={handleClose}>
+      {/* Modal for actions (complete/remove) */}
+      <Modal open={open} onClose={() => setOpen(false)}>
         <Box
           sx={{
             position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 250,
+            width: 240,
             bgcolor: "background.paper",
             border: "2px solid #455D7A",
             borderRadius: "10px",
             boxShadow: 24,
-            p: 4,
+            p: 3,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             gap: 2,
           }}
         >
-          <Typography variant="h6" component="h2">
-            Ações
-          </Typography>
-          <Stack direction="column" spacing={1} alignItems="center">
+          <Typography variant="h6">Actions</Typography>
+          <Stack direction="column" spacing={1}>
+            {/* Complete task button */}
             <Button
               variant="contained"
               color="primary"
               onClick={() => {
-                setIconEnabled(true);
-                handleClose();
+                completeTodo(todo.id);
+                setOpen(false);
               }}
               startIcon={<CheckCircleIcon />}
             >
-              Completar
+              Complete
             </Button>
+            {/* Remove task button */}
             <Button
               variant="contained"
               color="secondary"
               onClick={() => {
                 removeTodo(todo.id);
-                handleClose();
+                setOpen(false);
               }}
               startIcon={<RemoveCircleIcon />}
             >
-              Remover
+              Remove
             </Button>
           </Stack>
         </Box>
@@ -136,5 +138,4 @@ const Todo = ({ todo, removeTodo, completeTodo }) => {
     </Box>
   );
 };
-
-export default Todo;
+export default TodoItem;
